@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/local/bin/docker-compose -f docker-compose.pi.yml run --rm php-cli php scripts/random-points.php ${@}

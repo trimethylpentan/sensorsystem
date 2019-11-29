@@ -1,0 +1,3 @@
+Evermann-P = Philipp Evermann <gramini-hq@web.de>
+Fischer2-P = Pascal Fischer <pascal.0399@yahoo.de>
+Linde-L = Luke Linde <lukelinde99@yahoo.de>

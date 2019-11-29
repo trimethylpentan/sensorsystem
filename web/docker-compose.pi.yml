@@ -1,0 +1,75 @@
+version: "3.7"
+
+services:
+  web:
+    image: nginx
+    depends_on:
+      - php-fpm
+    volumes:
+      - .:/app
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"
+      - "443:443"
+
+  php-fpm:
+    image: sensor-fpm
+    build:
+      context: ./docker/php-fpm
+      dockerfile: ./Dockerfile
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    user: "1000"
+
+  php-sock:
+    image: sensor-sock
+    build:
+      context: ./docker/php-cli
+      dockerfile: ./Dockerfile
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    user: "1000"
+    working_dir: /app
+    command: php public/index.php start-socket
+
+  php-cli:
+    image: sensor-cli
+    build:
+      context: ./docker/php-cli
+      dockerfile: ./Dockerfile
+    volumes:
+      - .:/app
+    user: "1000"
+    working_dir: /app
+
+  db:
+    image: linuxserver/mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: sensorsadmin
+      MYSQL_DATABASE: sensor
+      MYSQL_USER: sensor
+      MYSQL_PASSWORD: o3r94uztg
+      TZ: Europe/Berlin
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/config
+
+  pma:
+    image: martinjohn/phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_USER: sensor
+      PMA_PASSWORD: o3r94uztg
+    ports:
+      - "88:80"
+    depends_on:
+      - db
+
+volumes:
+  db-data:
