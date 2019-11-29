@@ -1,0 +1,12 @@
+.idea
+web/.idea
+web/vendor
+web/frontend/node_modules
+SensorSystem/.idea
+SensorSystem/bin
+SensorSystem/Makefile
+SensorSystem/CMakeFiles
+SensorSystem/cmake_install.cmake
+SensorSystem/CMakeCache.txt
+SensorSystem/SensorSystem.cbp
+SensorSystem/svnignore.txt
