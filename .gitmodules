@@ -1,0 +1,3 @@
+[submodule "SensorSystem/libs/simpleini"]
+	path = SensorSystem/libs/simpleini
+	url = https://github.com/brofield/simpleini
