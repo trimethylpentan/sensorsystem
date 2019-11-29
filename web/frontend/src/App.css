@@ -1,0 +1,174 @@
+:root {
+    --color-container-shadow: #777;
+
+    --color-grey-light: rgb(151, 150, 150);
+    --color-grey-dark: rgb(81, 80, 80);
+    --color-grey-darker: rgb(41, 40, 40);
+
+    --color-red-slight: #cda9b0;
+    --color-green-slight: #b2cdb4;
+    --color-yellow-slight: #cdc5b3;
+}
+
+.container {
+    width: 85vw;
+    box-shadow: 0 0 5px 5px var(--color-container-shadow);
+    margin:50px 20px 50px 20px;
+}
+
+.head {
+    vertical-align: center;
+    margin: 5px;
+    padding-top: 5px;
+}
+
+#graph-head.head {
+    margin-top: -25px;
+}
+
+.content {
+    padding: 10px;
+}
+
+.settings {
+    margin-bottom: 10px;
+}
+
+.input {
+    margin-bottom: 4px;
+}
+
+.input-native {
+    background-color: var(--color-grey-light);
+    border: 2px var(--color-grey-light) ridge;
+    border-radius: 5px;
+}
+
+.input-value-changed {
+    background-color: var(--color-red-slight);
+}
+
+input[type=checkbox] {
+    transform: scale(1.75);
+}
+
+.font-italic {
+    font-style: italic;
+}
+
+.button {
+    display: inline;
+    margin-left: 5px;
+    margin-right: 5px;
+
+    color: #222;
+    border: 1px groove #CCC;
+    background: linear-gradient(-20deg, var(--color-grey-light), var(--color-grey-dark));
+    cursor: pointer;
+    vertical-align: middle;
+    max-width: 100px;
+    padding: 5px;
+    text-align: center;
+
+    user-select: none;
+}
+
+.button:active {
+  color: #999;
+  background: linear-gradient(-10deg, var(--color-grey-dark), var(--color-grey-darker));
+  box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
+}
+
+.button.active {
+    background: linear-gradient(90deg, #2f6a7a, #61dafb 30%, #61dafb 70%, #2f6a7a);
+}
+
+.button.active:active {
+    color: #bbb;
+    background: linear-gradient(90deg, #45a6bd, #2f7684 30%, #2f7684 70%, #45a6bd);
+    box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
+}
+
+label {
+    font-size: calc(12px + 1vmin);
+    margin-right: 10px;
+}
+
+input {
+    height: calc(16px + 1vmin);
+    font-size: calc(10px + 1vmin);
+    padding: 4px;
+}
+
+.error {
+    color: var(--color-red-slight);
+}
+
+.App-logo {
+    animation: App-logo-spin infinite 20s linear;
+    height: 40vmin;
+    pointer-events: none;
+}
+
+.App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.App-link {
+    color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+table {
+    text-align: right;
+    border-spacing: 0;
+    color: #e9e9e9;
+    width: 100%;
+}
+
+table th.center-head {
+    text-align: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border: solid 1px #373737;
+}
+
+td {
+    border: solid 1px #373737;
+    padding: 3px 10px 3px;
+}
+
+#all.button, #temperature.button, #humidity.button, #airPressure.button {
+    font-size: 20px;
+}
+
+#all.active.button{
+    background: linear-gradient(90deg, #2f9b86, #32c9b4 30%, #32c9b4 70%, #2F9B86);
+}
+
+#temperature.active.button {
+    background: linear-gradient(90deg, #9B321B, #E1391B 30%, #E1391B 70%, #9B321B);
+}
+
+#humidity.active.button {
+    background: linear-gradient(90deg, #004E9B, #0088FE 30%, #0088FE 70%, #004E9B);
+}
+
+#airPressure.active.button {
+    background: linear-gradient(90deg, #4E9B40, #5CCD45 30%, #5CCD45 70%, #4E9B40);
+}
+

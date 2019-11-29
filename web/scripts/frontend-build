@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+(
+  # http://redsymbol.net/articles/unofficial-bash-strict-mode/
+  set -euo pipefail
+  IFS=$'\n\t'
+
+  cd frontend/
+  npm run-script build
+  cp -r build/* ../public/
+  rm -rf build/
+)

@@ -1,0 +1,31 @@
+ - mini weather station
+ - BME280 sensor (temperature, humidity, pressure)
+ - languages 
+	- programming
+		- PHP
+		- JS
+		- C++
+		- bash
+	- structure
+		- HTML
+		- CSS
+		- JSON
+		- YAML
+ - technology
+	- BME280
+	- Docker
+	- Docker-Compose
+	- SVN
+	- nginx
+	- php-cli
+	- php-fpm
+	- MySQL
+	- MariaDB
+	- phpmyadmin
+	- Web-Socket
+	- Webpack
+	
+ - frameworks
+	- JS: React-JS
+	- PHP: none
+ - 
