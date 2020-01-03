@@ -10,3 +10,7 @@ SensorSystem/cmake_install.cmake
 SensorSystem/CMakeCache.txt
 SensorSystem/SensorSystem.cbp
 SensorSystem/svnignore.txt
+documentation/html
+documentation/*.odt
+documentation/*.pdf
+web/frontend/build

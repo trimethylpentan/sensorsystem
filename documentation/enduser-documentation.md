@@ -18,7 +18,7 @@ responsible for the web-backend and -frontend, as well as Pascal Fischer for the
 ### Prerequisites
 
 - Raspberry Pi with Raspbian (Lite (recommended) or Desktop)
-- internet
+- internet-access
 - bash  (installed by default)
 - cmake (installed by default)
 - make  (installed by default)
