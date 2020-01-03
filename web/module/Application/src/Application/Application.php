@@ -56,16 +56,18 @@ class Application
                 $controller->prepare($this->request, $this->response, $route);
                 $controller->handle($vars);
 
-                $this->echoContent();
-
-                return;
+                break;
             case Dispatcher::NOT_FOUND:
+                $this->response->setStatusCode(404);
                 $this->response->setContent('404 - Not Found :(');
-                return;
+                break;
             case Dispatcher::METHOD_NOT_ALLOWED:
+                $this->response->setStatusCode(405);
                 $this->response->setContent('405 - Method Not Allowed :(');
-                return;
+                break;
         }
+
+        $this->echoContent();
     }
 
     private function attachWhoops(): void

@@ -79,10 +79,34 @@ The following UML-Diagram shows the class structure of the SensorSystem-Project:
 
 ### web
 
-// TODO: create image from drawio
-![UML-Diagram of the SensorSystem](./images/uml-web.jpg)
+![UML-Diagram of the PHP-Backend](./images/uml-web.png)
 
+The PHP application has one file as an entrypoint, `public/index.php`.
+As it is in the `public` directory of the web server,
+it includes a bootstrapper from outside the publicly accessible area to avoid exposing code to the outer world.
+This bootstrapper differentiates between a fpm (FastCGI Process Manager)
+and a cli (Command Line Interface) context and runs one of two different entry classes.
 
+#### (Cli)Application
+ 
+The class `Application` handles web requests, whereas `CliApplication` processes calls from the cli.
+Both classes have some behaviors in common, as they both have a method named `run`, which starts by reading
+the application config and building a dependency container.
+Then, they decide what logic should be executed depending on the web request or cli options, respectively.
+
+The `Application` starts to differ by attaching an error handler named "Whoops",
+which is installed from an external library, in a method named `attachWhoops`.
+Next, it calls it's method `collectRoutes` to build a list of configured routes, each one with its own handler,
+called `Controller`. A route is chosen based on an URI and the HTTP method the request was made with.
+If no route was matched, an error is returned to the client.  
+Afterwards, the responsible controller for that route is instantiated using the dependency container,
+which writes some date into the response data object.  
+Finally, the contents of said object is sent to the client.
+
+The `CliApplication` instead builds a list of configured commands and picks a command based on the first option
+of the cli call. It too is instantiated by the dependency container and handles further execution.
+
+#### Data Objects
 
 ## 6. Used Hardware
 
