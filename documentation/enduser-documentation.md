@@ -18,11 +18,11 @@ responsible for the web-backend and -frontend, as well as Pascal Fischer for the
 ### Prerequisites
 
 - Raspberry Pi with Raspbian (Lite (recommended) or Desktop)
-- internet
-- bash      (installed by default)
-- cmake     (installed by default)
-- make      (installed by default)
-- gcc       (installed by default)
+- internet-access
+- bash  (installed by default)
+- cmake (installed by default)
+- make  (installed by default)
+- gcc   (installed by default)
 - i2c-tools (installed by default (Raspbian only))
 - docker         (`curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh`)
 - docker-compose (``sudo curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose``)

@@ -15,11 +15,46 @@ This is an explanation of the important directories and files.
 #### SensorSystem
 
 The `SensorSystem` directory contains the C++-Code and all needed files for building the project.
+Everything in this directory an it's subdirectories is maintained by Pascal Fischer 
 
-|Directory|Description|
-|---------|-----------|
-|cmake    |All `find`-CMake-Files for finding external libraries while creating the `makefile` with cmake are stored here|
-|src      |Contains all C++-header and source files|
+##### cmake
+
+Here you'll find all `find`-CMake-Files for finding external libraries while creating the `makefile` with cmake.
+
+##### src
+
+As the name suggests, this directory contains all C++-header and source files.
+To get more information about the classes used, take a look at the UML-diagrams in chapter 5.
+
+The contents of the files in this directory are explained in detail below. Every `.cpp` also has it's own header file,
+consisting of the same name but with the fileending `.h`. Header files contain information about classes, for example classes, methods
+and fields as well as other included header files. The implementation of the header files can be found in the corresponding
+`.cpp`-file.
+
+This documentation wont go into detail about the header files, as they are relatively self explaining.
+
+###### main.cpp
+The `main.cpp` contains the main loop and is responsible for starting the readout and sending the data to the repository, which saves them permanently.
+The repository could be changed easily if you don't want to save your data in a MariaDB table.
+
+###### BME280.cpp
+This class is responsible for the actual data readout of temperature, humidity and pressure. The constructor writes the config registers,
+the methods "ReadTemperature", "ReadHumidity" and "ReadPressure" are responsible for reading their corresponding data from the sensors registers, 
+passing them to a "CalculateReal"-method. These methods are provided by Bosch and calculate the actual values from the raw data and trimming parameters
+
+###### TrimmingParameters.cpp
+The `TrimmingParameters`-class acts as a container, which stores the trimming parameters saved in several registers of the sensor.
+As these values do not change, it increases performance to hold these values in memory after reading them the first time.
+
+###### Repository/BME280Repository.cpp
+This repository connects to the MariaDB and saves the gathered data to the database table. It uses the MariaDBConfig to change
+the login data. The `SaveMeasurement`-method takes the temperature, humidity and pressure and send it to the database using
+prepared statements. If any exception occurs it will be sent to stderr.
+The method `GetCurrentTime` returns the current datetime as string in the format `Y-m-d H:M:S`.
+
+###### Config/MariaDBConfig.cpp
+Using the simpleini-library, this class reads the MariaDb-config from the `mariadb.ini` in the `config` directory and loads it into
+memory. It acts as a container and is used in the `BME280Repository`.
 
 #### web
 
@@ -50,20 +85,13 @@ It has it's own directory structure and notable files.
 - `package.json`: configuration for npm, which handles js dependencies and meta information
 - `package.lock`: contains information about each required dependency and its currently used version
 
+
 |Directory   |Description|
 |------------|-----------|
 |node_modules|Not directly belonging to the project.<br/>JavaScript dependencies to external libraries required by the frontend are stored here.<br/>It is automatically created by npm|
 |public      |The root directory of the frontend development Web-Server.|
 |src         |The source of the frontend JavaScript, which is a React-App.<br/>It consists of classes, components, style, types and helper scripts.|
 
-### Components
-
-The project is split up into three separate microservices:
-- An executable program responsible for measuring and storing the data in a database
-- A web-frontend to view the data in a web browser
-- A web-backend that provides the data to the frontend
-
-// TODO
 
 ## 5. Code structure
 
@@ -146,15 +174,20 @@ and try and error with cli commands. This resulted in the following code for rea
 
 ```cpp
 SensorSystem::BME280::BME280() {
+    // Setting up the connection to the sensor
     device = wiringPiI2CSetup(0x76);
+    // Write the config to the config-registers 
     wiringPiI2CWriteReg8(device, 0xF2, 0x01);
     wiringPiI2CWriteReg8(device, 0xF4, 0x27);
     trimmingParameters = new TrimmingParameters();
+    // The tFine value saves a fine temperature value which is needed for temperature and humidity calculation
     tFine = nullptr;
 }
 
 float SensorSystem::BME280::ReadTemperature() {
+    // Read trimming parameters needed for calculating the real temperature
     trimmingParameters->ReadTemperatureTrimmingParameters();
+    // Read the values from the temperature registers
     unsigned int readTemperature = wiringPiI2CReadReg8(device, 0xFA) << 12;
     readTemperature += wiringPiI2CReadReg8(device, 0xFB) << 4;
 
@@ -169,6 +202,7 @@ float SensorSystem::BME280::ReadHumidity() {
     trimmingParameters->ReadHumidityTrimmingParameters();
     long int readHumidity = bswap_16(wiringPiI2CReadReg16(device, 0xFD);
     long unsigned int realHumidity = CalculateRealHumidity(readHumidity);
+
     return (float) realHumidity;
 }
 
