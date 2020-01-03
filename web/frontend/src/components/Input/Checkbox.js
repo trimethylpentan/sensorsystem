@@ -1,6 +1,6 @@
+// @flow
+
 import * as React from "react";
-import {SyntheticEvent} from "react";
-import NumberInput from "./NumberInput";
 
 type Props = {
     name: string,
@@ -12,8 +12,8 @@ type Props = {
     onEnter: ?Function,
 };
 
-export default class CheckBox extends React.Component<Props, {}> {
-    updateValue(event: SyntheticEvent) {
+export default class CheckBox extends React.Component<Props> {
+    updateValue(event: SyntheticMouseEvent) {
         const input  = event.currentTarget;
         const update = this.props.update;
 

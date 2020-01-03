@@ -6,6 +6,10 @@ import MeasurementSocket from "../helpers/MeasurementSocket";
 import type {Point} from "../types/Point";
 import type {Color} from "../types/Color";
 
+/**
+ * @deprecated
+ * Debug only, do not use
+ */
 class DebugTest extends React.Component {
 
     state = {

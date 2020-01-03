@@ -26,7 +26,7 @@ class Settings extends React.Component<Props, SettingsType> {
         }
     };
 
-    updateInput(event) {
+    updateInput(event: SyntheticInputEvent) {
         const field = event.target.name;
         const newValue = event.target.value;
 
@@ -35,7 +35,7 @@ class Settings extends React.Component<Props, SettingsType> {
         });
     }
 
-    updateInputValue(name: string, newValue) {
+    updateInputValue(name: string, newValue: any) {
         this.setState({
             [name]: newValue,
         });
@@ -76,8 +76,7 @@ class Settings extends React.Component<Props, SettingsType> {
             newSettings.dateRange.to = DataFormatter.format(new Date(new Date().setHours(24,0,0,0)));
         }
 
-
-        console.log(newSettings);
+        console.log({newSettings});
         this.props.accept(newSettings);
     }
 

@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import Button from "./Button";
 import Table from "./Table";
@@ -23,8 +25,8 @@ class Container extends React.Component<{}, State> {
         errorMessage: null,
         points: [],
         settings: {
-            // host: '172.16.64.73',
-            // host: '172.16.112.29',
+            // host: '172.16.64.73', // For testing: PI-IP
+            // host: '172.16.112.29', // For testing: local machine
             host: window.location.hostname,
             maxPoints: 30,
             random: false,
@@ -51,14 +53,14 @@ class Container extends React.Component<{}, State> {
         this.webSocket.onError((errorEvent: MessageEvent) => console.log(errorEvent));
     }
 
-    buttonClick(event, name) {
+    buttonClick(event: SyntheticMouseEvent, name: string) {
         this.setState({
             activeComponent: name
         })
     }
 
     refreshSettings(rawSettings: SettingsType) {
-        console.log(rawSettings);
+        console.log({rawSettings});
 
         let newSettings = {...rawSettings};
         const from: string = rawSettings.dateRange.from;
@@ -78,7 +80,7 @@ class Container extends React.Component<{}, State> {
         }, this.refreshPoints.bind(this));
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.webSocket.open(this.state.settings.host);
 
         if (this.state.errorMessage === null) {

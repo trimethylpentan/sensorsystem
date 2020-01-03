@@ -5,7 +5,7 @@ import React from 'react';
 type Props = {
     active: boolean,
     name: string,
-    click: Function<Event, string>
+    click: Function<SyntheticMouseEvent, string>
 };
 
 class Button extends React.Component<Props> {
@@ -13,7 +13,7 @@ class Button extends React.Component<Props> {
         return (
             <div
                 className={`button${this.props.active ? ' active' : ''}`}
-                onClick={(event) => this.props.click(event, this.props.name)}
+                onClick={(event: SyntheticMouseEvent) => this.props.click(event, this.props.name)}
                 id={this.props.name}
             >
                 <span>{this.props.children}</span>
