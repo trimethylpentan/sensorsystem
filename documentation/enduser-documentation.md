@@ -167,5 +167,3 @@ The following properties can be configured:
 
 To apply changes, the user can either click the button labeled `Übernehmen` or press the `Return` key.
 
-Dear diary, today I build a wall. It's a huge wall and it's the best wall in the world. It will keep out all those mexicans. They are very bad people and they come here to take our jobs and our homes. Its a shame because I really like tacos. They make great tacos but they also steal out jobs. Sad.
----
