@@ -1,0 +1,175 @@
+<head>
+    <link rel="stylesheet" href="github-markdown.css">
+</head>
+<body class="markdown-body">
+<h1>Technical Documentation</h1>
+<hr />
+<h2>4. Project Structure</h2>
+<h3>Directory Structure</h3>
+<p>As the project is fully modular, its directory structure is very well organized.
+Some directories may seem redundant, but they make sense considering the project
+is able to grow without re-organizing the structure.</p>
+<p>This is an explanation of the important directories and files.</p>
+<h4>SensorSystem</h4>
+<p>The <code>SensorSystem</code> directory contains the C++-Code and all needed files for building the project.</p>
+<h5>cmake</h5>
+<p>Here you'll find all <code>find</code>-CMake-Files for finding external libraries while creating the <code>makefile</code> with cmake.</p>
+<h5>src</h5>
+<p>As the name suggests, this directory contains all C++-header and source files.</p>
+<h4>web</h4>
+<p>This directory contains the web-frontend and the web-backend.
+It has it's own directory structure and notable files.</p>
+<ul>
+<li><code>composer.json</code>: configuration for composer, which handles php dependencies, autoloading and meta information</li>
+<li><code>composer.lock</code>: contains information about each required dependency and its currently used version</li>
+<li><code>docker-compose.yml</code>: configuration for docker services used for this project. This file is read by docker-compose which automatically start the containers</li>
+<li><code>docker-compose.pi.yml</code>: the Pi needs different container images than the test environment due to a different CPU architecture</li>
+</ul>
+<h5>config</h5>
+<p>Here are some configurations that the project depends on, such as database credentials,
+commands for usage from the cli, rotes for the frontend and object dependencies.</p>
+<p>The main file is <code>config.php</code>, which reads the other files and organizes their contents
+into an associative array.</p>
+<h5>data</h5>
+<p>This directory is for storing data of any kind, such as logs files or database queries.
+Currently, there are only a couple of <code>.sql</code> files inside the <code>sql</code> directory containing
+table initialization queries.</p>
+<h5>docker</h5>
+<p>Contains specific files for some used docker containers, like nginx and php.
+There is a custom configuration for the web server and a <code>Dockerfile</code> which is responsible
+for a custom php image including some extensions like <code>xdebug</code> and <code>mysql</code>. </p>
+<h5>frontend</h5>
+<p>The web-frontend is located here, it has it's own directory structure and notable files.</p>
+<ul>
+<li><code>.flowconfig</code>: required for <code>flow</code> to work, even if it's empty</li>
+<li><code>package.json</code>: configuration for npm, which handles js dependencies and meta information</li>
+<li><code>package.lock</code>: contains information about each required dependency and its currently used version</li>
+</ul>
+<h6>node_modules</h6>
+<p>Not directly belonging to the project.
+JavaScript dependencies to external libraries required by the frontend are stored here.</p>
+<h6>public</h6>
+<p>The root directory of the frontend development Web-Server.</p>
+<h6>src</h6>
+<p>The source of the frontend JavaScript, which is a React-App.
+It consists of classes, components, style and helper scripts.</p>
+<h5>module</h5>
+<p>Source of the PHP application. It contains a <code>bootstrap.php</code>, which serves as the entry point and starts the application.
+The source is organized in expandable modules, but currently only contains the <code>Application</code> module.</p>
+<h5>public</h5>
+<p>Root of the frontend web-server.
+Contains an entry point to the php application, some resources and JavaScript files.</p>
+<h5>scripts</h5>
+<p>Used to store helper scripts for a more user friendly usage.
+There are scripts to start and stop the web application, building the frontend and other scripts used for development.</p>
+<h5>vendor</h5>
+<p>Storage for PHP dependencies to external libraries required by this application.
+It also contains binaries from these libraries as well as an autoloader for PHP classes.</p>
+<h2>5. Code structure</h2>
+<p>To get an overview of the whole project, you can take a look at this dataflow-diagram:</p>
+<p><img src="../images/flow-diagram.jpg" alt="Dataflow-Diagram" /></p>
+<p>The following UML-Diagram shows the class structure of the SensorSystem-Project:</p>
+<p><img src="../images/uml-sensor.jpg" alt="UML-Diagram of the SensorSystem" /></p>
+<h2>6. Used Hardware</h2>
+<p>This project depends on a Bosch BME280, connected to the device via an I²C-interface, e.g. the GPIO-pins of a raspberry pi.
+The following illustration shows how to connect the sensor to the GPIO-Pins.</p>
+<p><img src="../images/connection.png" alt="How to connect the sensor" /></p>
+<p>The communication with this device is possible via the I²C-protocol. To use this, you need to install the i2c-tools, which are
+preinstalled on the rasperry pi.
+<code>sudo apt install i2c-tools</code></p>
+<p>The BME280 is reachable at register <code>0x76</code>. To test if the sensor is correctly plugged in, you can use the command <code>sudo i2cdump -y 1 0x76</code>, which will
+show all register values in any successful case.</p>
+<p>To enable the actual measurement, it is needed to write to the config registers. The following setup will enable oversampling </p>
+<table>
+<thead>
+<tr>
+<th>register</th>
+<th>value</th>
+<th>effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xF2</td>
+<td>0x01</td>
+<td>set  <code>humidity</code> oversampling to <code>1</code></td>
+</tr>
+<tr>
+<td>0xF4</td>
+<td>0x27</td>
+<td>set <code>pressure</code> and <code>temperature</code> oversampling to <code>1</code>; set sensor into <code>normal mode</code></td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME280-DS002.pdf">Bosch-documentation</a> shows more details about register values.</p>
+<p>Data-readout is possible via these registers:</p>
+<table>
+<thead>
+<tr>
+<th>registers</th>
+<th>values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xFA, 0xFB, 0xFC(bit 7, 6, 5, 4)</td>
+<td>temperature</td>
+</tr>
+<tr>
+<td>0xF7, 0xF8, 0xF9(bit 7, 6, 5, 4)</td>
+<td>pressure</td>
+</tr>
+<tr>
+<td>0xFD, 0xFE</td>
+<td>humidity</td>
+</tr>
+</tbody>
+</table>
+<h2>7. The hard parts</h2>
+<p>The most difficult part was to find out the needed registeres for reading data from the sensor and how to configure it. It required many hours in reading the sensors documentation
+and try and error with cli commands. This resulted in the following code for reading data:</p>
+<pre><code class="language-cpp">SensorSystem::BME280::BME280() {
+    device = wiringPiI2CSetup(0x76);
+    wiringPiI2CWriteReg8(device, 0xF2, 0x01);
+    wiringPiI2CWriteReg8(device, 0xF4, 0x27);
+    trimmingParameters = new TrimmingParameters();
+    tFine = nullptr;
+}
+
+float SensorSystem::BME280::ReadTemperature() {
+    trimmingParameters-&gt;ReadTemperatureTrimmingParameters();
+    unsigned int readTemperature = wiringPiI2CReadReg8(device, 0xFA) &lt;&lt; 12;
+    readTemperature += wiringPiI2CReadReg8(device, 0xFB) &lt;&lt; 4;
+
+    return (float)CalculateRealTemperature((long int)readTemperature);
+}
+
+float SensorSystem::BME280::ReadHumidity() {
+    if (tFine == nullptr) {
+        throw SensorSystem::BadMethodCallException("Temperature must be read before humidity");
+    }
+
+    trimmingParameters-&gt;ReadHumidityTrimmingParameters();
+    long int readHumidity = bswap_16(wiringPiI2CReadReg16(device, 0xFD);
+    long unsigned int realHumidity = CalculateRealHumidity(readHumidity);
+    return (float) realHumidity;
+}
+
+float SensorSystem::BME280::ReadPressure() {
+    trimmingParameters-&gt;ReadPressureTrimmingParameters();
+    long int readPressure = bswap_16(wiringPiI2CReadReg16(device, 0xF7)) &lt;&lt; 4;
+    readPressure += (wiringPiI2CReadReg8(device, 0xF9) &amp; 0b11110000) &gt;&gt; 4;
+
+    return (float)CalculateRealPressure(readPressure);
+}</code></pre>
+<p>The constructor initializes the connection to the sensor and writes the setup into the config registers to enable humidity,
+pressure and temperature oversampling and enable the measurement off the sensor.</p>
+<p>The three <code>Read</code>-Method read the registers containing the raw data and passing it to the corresponding method provided by
+Bosch in the documentation of the sensor. These methods return the actual humidity, pressure and temperature in percent,
+hPa and °C.</p>
+<h2>8. Open points</h2>
+<p>The project as it is is almost completely finished, but the optional part of reading out a second sensor to get information
+about current brightness or colors was discarded for time reasons.</p>
+<p>A nice-to-have feature is probably a filter for a datetime-selection in the web-frontend settings, but this feature is
+not completely implemented yet.</p>
+</body>
