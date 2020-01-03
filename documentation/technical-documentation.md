@@ -16,85 +16,45 @@ This is an explanation of the important directories and files.
 
 The `SensorSystem` directory contains the C++-Code and all needed files for building the project.
 
-##### cmake
-
-Here you'll find all `find`-CMake-Files for finding external libraries while creating the `makefile` with cmake.
-
-##### src
-
-As the name suggests, this directory contains all C++-header and source files.
+|Directory|Description|
+|---------|-----------|
+|cmake    |All `find`-CMake-Files for finding external libraries while creating the `makefile` with cmake are stored here|
+|src      |Contains all C++-header and source files|
 
 #### web
 
 This directory contains the web-frontend and the web-backend.
 It has it's own directory structure and notable files.
 
-- `composer.json`: configuration for composer, which handles php dependencies, autoloading and meta information
-- `composer.lock`: contains information about each required dependency and its currently used version
-- `docker-compose.yml`: configuration for docker services used for this project. This file is read by docker-compose which automatically start the containers
-- `docker-compose.pi.yml`: the Pi needs different container images than the test environment due to a different CPU architecture
+|File                 |Description|
+|---------------------|-----------|
+|composer.json        |configuration for composer, which handles php dependencies, autoloading and meta information
+|composer.lock        |contains information about each required dependency and its currently used version
+|docker-compose.yml   |configuration for docker services used for this project. This file is read by docker-compose which automatically start the containers
+|docker-compose.pi.yml|the Pi needs different container images than the test environment due to a different CPU architecture
 
-##### config
-
-Here are some configurations that the project depends on, such as database credentials,
-commands for usage from the cli, rotes for the frontend and object dependencies.
-
-The main file is `config.php`, which reads the other files and organizes their contents
-into an associative array.
-
-##### data
-
-This directory is for storing data of any kind, such as logs files or database queries.
-Currently, there are only a couple of `.sql` files inside the `sql` directory containing
-table initialization queries.
-
-##### docker
-
-Contains specific files for some used docker containers, like nginx and php.
-There is a custom configuration for the web server and a `Dockerfile` which is responsible
-for a custom php image including some extensions like `xdebug` and `mysql`. 
+|Directory   |Description|
+|------------|-----------|
+|config      |Here are some configurations that the project depends on, such as database credentials,<br/>commands for usage from the cli, rotes for the frontend and object dependencies.<br/>The main file is `config.php`, which reads the other files and organizes their contents<br/>into an associative array.|
+|data        |This directory is for storing data of any kind, such as logs files or database queries.<br/>Currently, there are only a couple of `.sql` files inside the `sql` directory containing<br/>table initialization queries.|
+|docker      |Contains specific files for some used docker containers, like nginx and php.<br/>There is a custom configuration for the web server and a `Dockerfile` which is responsible<br/>for a custom php image including some extensions like `xdebug` and `mysql`.|
+|module      |Source of the PHP application. It contains a `bootstrap.php`, which serves as the entry point and starts the application.<br/>The source is organized in expandable modules, but currently only contains the `Application` module.
+|public      |Root of the frontend web-server.<br/>Contains an entry point to the php application, some resources and compressed JavaScript files.|
+|scripts     |Used to store helper scripts for a more user friendly usage.<br/>There are scripts to start and stop the web application, building the frontend and other scripts used for development.|
+|vendor      |Storage for PHP dependencies to external libraries required by this application.<br/>It also contains binaries from these libraries as well as an autoloader for PHP classes.<br/>It is automatically created by composer|
+|frontend    |The web-frontend is located here, it has it's own directory structure and notable files.<br/>See next section for a detailed explanation|
 
 ##### frontend
-
-The web-frontend is located here, it has it's own directory structure and notable files.
 
 - `.flowconfig`: required for `flow` to work, even if it's empty
 - `package.json`: configuration for npm, which handles js dependencies and meta information
 - `package.lock`: contains information about each required dependency and its currently used version
 
-###### node_modules
-
-Not directly belonging to the project.
-JavaScript dependencies to external libraries required by the frontend are stored here.
-
-###### public
-
-The root directory of the frontend development Web-Server.
-
-###### src
-
-The source of the frontend JavaScript, which is a React-App.
-It consists of classes, components, style and helper scripts.
-
-##### module
-
-Source of the PHP application. It contains a `bootstrap.php`, which serves as the entry point and starts the application.
-The source is organized in expandable modules, but currently only contains the `Application` module.
-
-##### public
-
-Root of the frontend web-server.
-Contains an entry point to the php application, some resources and JavaScript files.
-
-##### scripts
-
-Used to store helper scripts for a more user friendly usage.
-There are scripts to start and stop the web application, building the frontend and other scripts used for development.
-
-##### vendor
-
-Storage for PHP dependencies to external libraries required by this application.
-It also contains binaries from these libraries as well as an autoloader for PHP classes.
+|Directory   |Description|
+|------------|-----------|
+|node_modules|Not directly belonging to the project.<br/>JavaScript dependencies to external libraries required by the frontend are stored here.<br/>It is automatically created by npm|
+|public      |The root directory of the frontend development Web-Server.|
+|src         |The source of the frontend JavaScript, which is a React-App.<br/>It consists of classes, components, style, types and helper scripts.|
 
 ## 5. Code structure
 
