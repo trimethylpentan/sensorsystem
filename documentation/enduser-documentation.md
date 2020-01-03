@@ -25,8 +25,8 @@ responsible for the web-backend and -frontend, as well as Pascal Fischer for the
 - gcc   (installed by default)
 - docker         (`curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh`)
 - docker-compose (``sudo curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose``)
-- node-js        (`sudo apt install nodejs`)
-- npm            (`sudo apt install npm`)
+- node-js        (`sudo apt install nodejs`)
+- npm            (`sudo apt install npm`)
 
 ### Project Initialization
 
@@ -58,9 +58,9 @@ responsible for the web-backend and -frontend, as well as Pascal Fischer for the
 
 #### Sensor
 
-1. Install the needed dependencies:
-  1. Clone the [https://github.com/Roslaniec/MariaCpp](MariaDB-C++-Connector-repository) from Github to any directory on the raspberry.
-  2. Follow the installation-instructions in the [https://github.com/Roslaniec/MariaCpp/blob/master/INSTALL.md](install-md)
+1. Install the required dependencies:
+  1. Clone the [MariaDB-C++-Connector-repository](https://github.com/Roslaniec/MariaCpp) from Github to any directory on the raspberry.
+  2. Follow the installation-instructions in the [INSTALL.md](https://github.com/Roslaniec/MariaCpp/blob/master/INSTALL.md)
 2. Go to the project root and `cd` into `SensorSystem`
 3. run `cmake CMakeLists.txt`
 4. run `make`
@@ -104,9 +104,9 @@ To be able to use this sensor system, all services must run simultaneously
 
 ### Usage
 
-#### Webinterface 
+#### Web Interface 
 
-The Webinterface consists of three sections.
+The web interface consists of three sections.
 
 ##### The graph
 
@@ -119,13 +119,13 @@ The graph itself is split up in four sections.
 
 On this section every dataset is shown.  
 By hovering over a measure point on one of the lines the point will be highlighted and the value will displayed in a small lable.  
-Additionally all other measure points on the same timestamp will be highlighted aswell.  
+Additionally all other measure points on the same timestamp will be highlighted as well.  
 The 'Alle' section also allows to select which datasets are displayed.  
 
 ![Selected datasets](./images/graphAllSelection.png)
 
 By default, all sets will be displayed. 
-To deactive a certain set, the user just has to click on this specific set in the legend.  
+To deactivate a certain set, the user just has to click on this specific set in the legend.  
 If a set is deactivated the same process will reactivate the set.
 
 ![Selection: 'Temperatur'](./images/graphTemperature.png)
@@ -138,11 +138,11 @@ The third section displays the humidity at the time of measurement.
 
 ![Selection: 'Temperatur'](./images/graphTemperature.png)
 
-The fourth section displays the airpressure at the time of measurement.
+The fourth section displays the air pressure at the time of measurement.
 
 ##### The table
 
-The second section of the webinterface `Tabelle` displays a table that shows the data of each measure point.
+The second section of the web interface `Tabelle` displays a table that shows the data of each measure point.
 
 ![A table with example data](./images/table.png)
 
@@ -150,20 +150,19 @@ The entries in the table are sorted by the time they were measured.
 
 ##### Settings
 
-The interface provides the option to configure the basic functionalitys of the system.
+The interface provides the option to configure the basic functionalities of the system.
 
 ![Settings](images/settings.png)
 
 The following properties can be configured:
 
-|property|description|
-|---|---|
-|API Host|address to the host of the measurement system|
-|Maximale Punkte| amount of measure points the graph and the table will show|
-|Random Points| measure points will be randomized (disables `Datumsbereich einschränken`)|
-|Datumsbereich einschränken| graph and table will only show points in a specified time period(disables `Random Points`)|
-|Von| beginn of specified time period (Option only shown if `Datumsbereich einschränken` is enabled)|  
-|Bis| end of specified time period (Option only shown if `Datumsbereich einschränken` is enabled)|  
+| property                   | description |
+|----------------------------|-------------|
+| API Host                   | address of the measurement system host |
+| Maximale Punkte            | amount of measure points the graph and the table will show |
+| Random Points              | measure points will be randomized (disables `Datumsbereich einschränken`) |
+| Datumsbereich einschränken | graph and table will only show points in a specified time period(disables `Random Points`) |
+| Von                        | begin of specified time period (Option only shown if `Datumsbereich einschränken` is enabled) |  
+| Bis                        | end of specified time period (Option only shown if `Datumsbereich einschränken` is enabled) |  
 
 To apply changes, the user can either click the button labeled `Übernehmen` or press the `Return` key.
-
