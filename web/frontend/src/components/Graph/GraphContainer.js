@@ -1,10 +1,11 @@
-import React from "react";
-import type {Point} from "../../types/Point";
-import Button from "../Button";
-import MainGraph from "./MainGraph";
-import TemperatureGraph from "./TemperatureGraph";
-import HumidityGraph from "./HumidityGraph";
-import AirPressureGraph from "./AirPressureGraph";
+// @flow
+import React from 'react';
+import type {Point} from '../../types/Point';
+import Button from '../Button';
+import MainGraph from './MainGraph';
+import TemperatureGraph from './TemperatureGraph';
+import HumidityGraph from './HumidityGraph';
+import AirPressureGraph from './AirPressureGraph';
 
 type Props = {
     points: Point[]
@@ -19,7 +20,7 @@ export default class GraphContainer extends React.Component<Props, State> {
         selectedGraph: 'all',
     };
 
-    buttonClick(event: Event, name :string) {
+    buttonClick(event: SyntheticMouseEvent, name: string) {
         this.setState({
             selectedGraph: name,
         })

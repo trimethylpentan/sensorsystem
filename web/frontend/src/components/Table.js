@@ -7,10 +7,8 @@ type Props = {
     points: Point[],
 };
 
-type State = {};
-
-class Table extends React.Component<Props, State> {
-    formatColor(color: Color) {
+class Table extends React.Component<Props> {
+    formatColor(color: Color): string {
         const r = color.r.toString(16).padStart(2, '0');
         const g = color.g.toString(16).padStart(2, '0');
         const b = color.b.toString(16).padStart(2, '0');

@@ -183,7 +183,7 @@ float SensorSystem::BME280::ReadPressure() {
 The constructor initializes the connection to the sensor and writes the setup into the config registers to enable humidity,
 pressure and temperature oversampling and enable the measurement off the sensor.
 
-The three `Read`-Method read the registers containing the raw data and passing it to the corresponding method provided by
+The three `Read`-Methods read the registers containing the raw data and passing it to the corresponding method provided by
 Bosch in the documentation of the sensor. These methods return the actual humidity, pressure and temperature in percent,
 hPa and °C.
 
