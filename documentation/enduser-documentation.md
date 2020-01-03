@@ -74,9 +74,9 @@ responsible for the web-backend and -frontend, as well as Pascal Fischer for the
 - Start the sensor by `cd`-ing into SensorSystem and executing `./SensorSystem`
 - Stop the sensor with ^C (`CTRL` + `C`)
 
-### Test Data
+### Test Data (optional)
 
-To test the web part, you can insert some sample values.  
+To test the web part, you can insert some sample values into the database.  
 Do so by being in the `web` directory and running `scripts/debug-insert-perlin-data`,
 which accepts the amount of points to insert as the first parameter,
 and offers a possibility to wait after each inserted point.

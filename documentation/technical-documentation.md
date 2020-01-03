@@ -124,8 +124,8 @@ To enable the actual measurement, it is needed to write to the config registers.
 
 |register|value|effect|
 |--------|-----|------|
-|0xF2|0x01|set  `humidity` oversampling to `1`|
-|0xF4|0x27|set `pressure` and `temperature` oversampling to `1`; set sensor into `normal mode`|
+|0xF2    |0x01 |set `humidity` oversampling to `1`|
+|0xF4    |0x27 |set `pressure` and `temperature` oversampling to `1`; set sensor into `normal mode`|
 
 The [Bosch-documentation](https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME280-DS002.pdf) shows more details about register values.
 
@@ -194,5 +194,3 @@ about current brightness or colors was discarded for time reasons.
 
 A nice-to-have feature is probably a filter for a datetime-selection in the web-frontend settings, but this feature is
 not completely implemented yet.
-
-
