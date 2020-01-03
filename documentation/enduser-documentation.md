@@ -136,7 +136,7 @@ The second section displays the temperature at the time of measurement.
 
 The third section displays the humidity at the time of measurement.
 
-![Selection: 'Temperatur'](./images/graphTemperature.png)
+![Selection: 'Luftdruck'](./images/graphAirpressure.png)
 
 The fourth section displays the air pressure at the time of measurement.
 
