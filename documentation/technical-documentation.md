@@ -56,15 +56,33 @@ It has it's own directory structure and notable files.
 |public      |The root directory of the frontend development Web-Server.|
 |src         |The source of the frontend JavaScript, which is a React-App.<br/>It consists of classes, components, style, types and helper scripts.|
 
+### Components
+
+The project is split up into three separate microservices:
+- An executable program responsible for measuring and storing the data in a database
+- A web-frontend to view the data in a web browser
+- A web-backend that provides the data to the frontend
+
+// TODO
+
 ## 5. Code structure
 
 To get an overview of the whole project, you can take a look at this dataflow-diagram:
 
 ![Dataflow-Diagram](./images/flow-diagram.jpg)
 
+### SensorSystem
+
 The following UML-Diagram shows the class structure of the SensorSystem-Project:
 
 ![UML-Diagram of the SensorSystem](./images/uml-sensor.jpg)
+
+### web
+
+// TODO: create image from drawio
+![UML-Diagram of the SensorSystem](./images/uml-web.jpg)
+
+
 
 ## 6. Used Hardware
 
@@ -74,13 +92,13 @@ The following illustration shows how to connect the sensor to the GPIO-Pins.
 ![How to connect the sensor](./images/connection.png)
 
 The communication with this device is possible via the I²C-protocol. To use this, you need to install the i2c-tools, which are
-preinstalled on the rasperry pi.
+pre-installed on the rasperry pi.
 `sudo apt install i2c-tools`
 
 The BME280 is reachable at register `0x76`. To test if the sensor is correctly plugged in, you can use the command `sudo i2cdump -y 1 0x76`, which will
 show all register values in any successful case.
 
-To enable the actual measurement, it is needed to write to the config registers. The following setup will enable oversampling 
+To enable the actual measurement, it is needed to write to the config registers. The following setup will enable oversampling
 
 |register|value|effect|
 |--------|-----|------|
@@ -91,15 +109,15 @@ The [Bosch-documentation](https://ae-bst.resource.bosch.com/media/_tech/media/da
 
 Data-readout is possible via these registers:
 
-|registers|values|
-|---------|------|
-|0xFA, 0xFB, 0xFC(bit 7, 6, 5, 4)|temperature|
-|0xF7, 0xF8, 0xF9(bit 7, 6, 5, 4)|pressure|
-|0xFD, 0xFE|humidity|
+|values     |registers|
+|-----------|------|
+|temperature|0xFA, 0xFB, 0xFC(bit 7, 6, 5, 4)|
+|pressure   |0xF7, 0xF8, 0xF9(bit 7, 6, 5, 4)|
+|humidity   |0xFD, 0xFE|
 
 ## 7. The hard parts
 
-The most difficult part was to find out the needed registeres for reading data from the sensor and how to configure it. It required many hours in reading the sensors documentation
+The most difficult part was to find out the needed registers for reading data from the sensor and how to configure it. It required many hours in reading the sensors documentation
 and try and error with cli commands. This resulted in the following code for reading data:
 
 ```cpp
@@ -134,7 +152,6 @@ float SensorSystem::BME280::ReadPressure() {
     trimmingParameters->ReadPressureTrimmingParameters();
     long int readPressure = bswap_16(wiringPiI2CReadReg16(device, 0xF7)) << 4;
     readPressure += (wiringPiI2CReadReg8(device, 0xF9) & 0b11110000) >> 4;
-
 
     return (float)CalculateRealPressure(readPressure);
 }

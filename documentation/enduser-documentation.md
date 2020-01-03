@@ -5,7 +5,7 @@
 ## 1. Introduction
 
 This project is a simple weather monitoring service. It measures temperature, humidity and pressure
-every 10 seconds and stores these measurements in a database.
+at an interval of 10 seconds and stores these measurements in a database.
 It is suited for anybody owning a raspberry pi with a connected Bosch BME280-Sensor via the I²C-interface.
 
 The Weather Monitoring project is provided by Philipp Evermann and Luke Linde,
@@ -19,10 +19,11 @@ responsible for the web-backend and -frontend, as well as Pascal Fischer for the
 
 - Raspberry Pi with Raspbian (Lite (recommended) or Desktop)
 - internet
-- bash  (installed by default)
-- cmake (installed by default)
-- make  (installed by default)
-- gcc   (installed by default)
+- bash      (installed by default)
+- cmake     (installed by default)
+- make      (installed by default)
+- gcc       (installed by default)
+- i2c-tools (installed by default (Raspbian only))
 - docker         (`curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh`)
 - docker-compose (``sudo curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose``)
 - node-js        (`sudo apt install nodejs`)
@@ -36,6 +37,8 @@ responsible for the web-backend and -frontend, as well as Pascal Fischer for the
 4. `cd` into the cloned repository (`cd sensorsystemlinux`)
 
 #### Hardware
+
+TODO
 
 #### Backend
 
@@ -93,7 +96,7 @@ the development of the environment.
 You can switch between the visualizations by clicking the respective tabs in
 the web-frontend which is reachable at the Pi on port 80. 
 
-The project is split up into three separated microservices:
+The project is split up into three separate microservices:
 - An executable program responsible for measuring and storing the data in a database
 - A web-frontend to view the data in a web browser
 - A web-backend that provides the data to the frontend
