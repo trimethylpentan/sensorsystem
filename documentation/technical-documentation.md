@@ -105,6 +105,49 @@ The following UML-Diagram shows the class structure of the SensorSystem-Project:
 
 ![UML-Diagram of the SensorSystem](./images/uml-sensor.jpg)
 
+#### Classes
+
+|Classname|Description|
+|---------|-----------|
+|MariaDBConfig|Reads the config data from the file `mariadbconfig.ini` in the `config` directory and serves as a container for the login-data of the server.|
+|BME280Repository|Serves as an adapter between the database and the application|
+|TrimmingParameters|Reads the trimming parameters from the sensors registers and holds them in memory serving as a container|
+|BME280|Responsible for the communication with the sensor|
+|BadMethodCallException|An exception class thrown if a method is called at a wrong time, e.g. `ReadPressure()` before `ReadTermperature()`|
+
+#### Methods
+
+##### BME280Repository
+- SaveMeaurement: This Method saves the data read from the sensor and normalized to SI-units in the database.
+- GetCurrentTime: It gets the current system time and returns it as a time object.
+
+ 
+##### BME280
+- ReadTemperature: This method gets the current temperature raw data from the sensor, passes it to `CalculateRealTemperature()`
+and returns the current temperature in °C multiplied by 100.
+- ReadPressure: The task of this method is to get get the raw pressure data from the sensor, pass it to `CalculateRealPressure()`
+and return it in hPa multiplied by 100
+- ReadHumidity: This one does the same as the previous two: It gets the raw humidity data from the sensor, passes it to `CalculateRealHumidity()`
+and returns it in percent multiplied by 1024.
+- The three `CalculateReal`-Methods: All of those three methods are provided by Bosch in their [documentation](https://www.bosch-sensortec.com/media/boschsensortec/downloads/environmental_sensors_2/humidity_sensors_1/bme280/bst-bme280-ds002.pdf).
+They are used to calculate the actual pressure, temperature and humidity, using the raw data and the trimming parameters from the corresponding
+registers of the sensor.
+ 
+##### TrimmingParameters:
+- ReadTemperatureTrimmingParameters: When called, this method reads the temperature trimming parameters from the sensors registers
+and writes them into the temperature-fields of the class.
+- ReadPressureTrimmingParameters: This method also reads trimming parameters from the registers and loads them into fields, but it loads the
+pressure trimming parameters instead of temperature.
+- ReadHumidityTrimmingParameters: As both of the methods above, this one reads the humidity trimming parameters from the sensors registers
+and loads them into memory by storing them in the corresponding fields.
+
+##### BadMethodCallException
+- what: If this exception is thrown, the `what`-method will be called and the string returned by this method will pre printed as an error message.
+
+##### MariaDBConfig
+- MariaDBConfig: The constructor of this class uses a library called "simpleini" to read the config for the MariaDB connection
+and stores it in class fields.
+
 ### web
 
 ![UML-Diagram of the PHP-Backend](./images/uml-web.png)
