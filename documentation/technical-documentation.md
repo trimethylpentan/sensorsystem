@@ -70,7 +70,7 @@ It has it's own directory structure and notable files.
 
 |Directory   |Description|
 |------------|-----------|
-|config      |Here are some configurations that the project depends on, such as database credentials,<br/>commands for usage from the cli, rotes for the frontend and object dependencies.<br/>The main file is `config.php`, which reads the other files and organizes their contents<br/>into an associative array.|
+|config      |Here are some configurations that the project depends on, such as database credentials,<br/>commands for usage from the CLI, rotes for the frontend and object dependencies.<br/>The main file is `config.php`, which reads the other files and organizes their contents<br/>into an associative array.|
 |data        |This directory is for storing data of any kind, such as logs files or database queries.<br/>Currently, there are only a couple of `.sql` files inside the `sql` directory containing<br/>table initialization queries.|
 |docker      |Contains specific files for some used docker containers, like nginx and php.<br/>There is a custom configuration for the web server and a `Dockerfile` which is responsible<br/>for a custom php image including some extensions like `xdebug` and `mysql`.|
 |module      |Source of the PHP application. It contains a `bootstrap.php`, which serves as the entry point and starts the application.<br/>The source is organized in expandable modules, but currently only contains the `Application` module.
@@ -112,15 +112,15 @@ The following UML-Diagram shows the class structure of the SensorSystem-Project:
 The PHP application has one file as an entrypoint, `public/index.php`.
 As it is in the `public` directory of the web server,
 it includes a bootstrapper from outside the publicly accessible area to avoid exposing code to the outer world.
-This bootstrapper differentiates between a fpm (FastCGI Process Manager)
-and a cli (Command Line Interface) context and runs one of two different entry classes.
+This bootstrapper differentiates between a FPM (FastCGI Process Manager)
+and a CLI (Command Line Interface) context and runs one of two different entry classes.
 
 #### (Cli)Application
  
-The class `Application` handles web requests, whereas `CliApplication` processes calls from the cli.
+The class `Application` handles web requests, whereas `CliApplication` processes calls from the CLI.
 Both classes have some behaviors in common, as they both have a method named `run`, which starts by reading
 the application config and building a dependency container.
-Then, they decide what logic should be executed depending on the web request or cli options, respectively.
+Then, they decide what logic should be executed depending on the web request or CLI options, respectively.
 
 The `Application` starts to differ by attaching an error handler named "Whoops",
 which is installed from an external library, in a method named `attachWhoops`.
@@ -131,10 +131,55 @@ Afterwards, the responsible controller for that route is instantiated using the 
 which writes some date into the response data object.  
 Finally, the contents of said object is sent to the client.
 
-The `CliApplication` instead builds a list of configured commands and picks a command based on the first option
-of the cli call. It too is instantiated by the dependency container and handles further execution.
+The `CliApplication` instead builds a list of configured commands and picks a command handler
+based on the first option of the CLI call. The handler is also instantiated by the
+dependency container and handles further execution.
 
 #### Data Objects
+
+Data objects serve as wrapper for simple data types and encapsulate them into more complex ones.
+They also allow for a more strict type-hinting.
+
+Except the `Client`, each data object has a private constructor, meaning they cannot be instantiated
+from other classes using `new`. Instead, they have a static method that is responsible for creating an instance.
+This can also be used to simulate method overloading, which is not featured in php, by creating multiple methods.
+
+Excluding `Route` and `Client`, each data object implements the `JsonSerializable` interface,
+meaning it can be transformed into a JSON compliant representation of its own.
+
+|Data Object|Description|
+|-----------|-----------|
+|UtcDateTime|Represents a regular DateTime object, but always uses the UTC timezone|
+|Client     |Contains a connection for a WebSocket client as well as an identifier for it|
+|Route      |Definition for a route that is used in the `Application` class|
+|Temperature|Simple representation of a temperature as a float|
+|Humidity   |Simple representation of humidity as a float|
+|Color      |Consists of three floats each one for a different color chanel (RGB)|
+|AirPressure|Simple representation of air pressure as a float|
+|Measurement|Summary of a date time, temperature, humidity, color and air pressure using the data objects from above|
+
+#### Controllers
+
+Controllers are responsible to respond to web requests and serve as an entry point for a specific route.
+They take the HTTP request and put data in the HTTP response.
+
+`AbstractController` is the base that each concrete controller needs to expand.
+It offers methods for retrieving both the request and the response as well as for getting the route that matched.
+There's also a helpful method for responding with JSON. The core of a controller is the `handle` method,
+which is declared as an abstract one in this class.
+
+|Controller         |Description|
+|-------------------|-----------|
+|IndexController    |Reads the frontend app `index.html`) and puts it into the response|
+|ApiController      |Takes a date range from the request query and uses the `MeasurementService` to respond with a JSON document containing measurements from the database|
+|ApiRandomController|Uses the `MeasurementService` to respond with a JSON document containing random generated measurements. The amount of generated measurements is taken from the request query|
+
+The CLI usage of this application also uses controllers, but they differ from the previously described ones.
+They expand `AbstractCliController`, which defines the abstract method `handleCli`.
+This method takes all the arguments from the CLI call as its only parameter.
+
+Currently, there is only one concrete CLI controller, namely `SocketController`.
+This controller builds and `IoServer` from the library `cboden/ratchet` to create a WebSocket server.
 
 ## 6. Used Hardware
 
