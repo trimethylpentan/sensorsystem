@@ -89,8 +89,8 @@ class MeasurementRepository
                 'green'        => random_int(0, 255),
             ];
 
-            $measurement                    = $this->rowToMeasurement($row);
-            $entries[] = $measurement;
+            $measurement = $this->rowToMeasurement($row);
+            $entries[]   = $measurement;
         }
 
         return $entries;

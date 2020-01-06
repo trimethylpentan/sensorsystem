@@ -109,7 +109,7 @@ The following UML-Diagram shows the class structure of the SensorSystem-Project:
 
 ![UML-Diagram of the PHP-Backend](./images/uml-web.png)
 
-The PHP application has one file as an entrypoint, `public/index.php`.
+The PHP application has one file as an entry point, `public/index.php`.
 As it is in the `public` directory of the web server,
 it includes a bootstrapper from outside the publicly accessible area to avoid exposing code to the outer world.
 This bootstrapper differentiates between a FPM (FastCGI Process Manager)
@@ -143,6 +143,7 @@ They also allow for a more strict type-hinting.
 Except the `Client`, each data object has a private constructor, meaning they cannot be instantiated
 from other classes using `new`. Instead, they have a static method that is responsible for creating an instance.
 This can also be used to simulate method overloading, which is not featured in php, by creating multiple methods.
+They usually have getter methods for retrieving the stored date. 
 
 Excluding `Route` and `Client`, each data object implements the `JsonSerializable` interface,
 meaning it can be transformed into a JSON compliant representation of its own.
@@ -180,6 +181,46 @@ This method takes all the arguments from the CLI call as its only parameter.
 
 Currently, there is only one concrete CLI controller, namely `SocketController`.
 This controller builds and `IoServer` from the library `cboden/ratchet` to create a WebSocket server.
+
+#### Repository
+
+Repositories in general are responsible for the communication with external data sources, like databases or APIs.
+This application only uses one repository named `MeasurementRepository`.
+The repository has a dependency to a PDO, (PHP Data Object), which can communicate with different type of databases.
+It offers some handy public methods for reading stored measurements in different ways.  
+`findRange` takes two date times and searches for measurements stored in the time span the date times define.  
+`findLatest` searches the latest measurements that are stored in the database. The amount is controlled by its parameter.  
+`generateRandom` simply generates a measurement with random data. Its parameter controls how many are generated.  
+
+It also has two private methods for logic that is needed in different places inside the repository.  
+`statementToArray` takes a prepared statement, executes it and puts the result in an array.  
+`rowToMeasurement` takes a single row from an executed statement and instantiates a measurement data object.  
+
+#### Services
+
+Services are used for general tasks that don't fit in any of the above categories.
+
+`MeasurementService` serves as a wrapper for the repository so controllers can use this service instead of
+directly interacting with the repository, which would be considered bad practice.  
+It offers two methods for retrieving measurements, `getMeasurements` for real measurements
+and `getRandomMeasurements` to generate random ones.
+
+`MeasurementSocketService` instead is a bit more complex.  
+It also has a dependency to the repository and stores the current time in a field.
+The `SocketController` uses this service as the handler for WebSocket events.
+Therefore the `MessageComponentInterface` needs to be implemented, which requires methods
+for each kind of possible WebSocket related event:  
+`onOpen` is triggered when a client connects to the socket. It logs a message to the console that
+someone successfully connected and also prints the clients identifier. To do so the client is stored in an array.  
+`onClose` is triggered when a client disconnects, either through a lost connection or a planned closing.
+It logs a message to the console containing the clients identifier.  
+`onMessage` is triggered when a client sends a message to the socket. It is empty because there is no need
+to handle messages.  
+`onTick` is called at a fixed interval, 3 seconds in this case. This is the main method of this service.
+It fetches the measurements that were stored in the database since the last tick, hence the stored time.
+The amount of found measurements is written to the console and the measurements are sent to all connected clients.
+
+TODO: weitermachen
 
 ## 6. Used Hardware
 
